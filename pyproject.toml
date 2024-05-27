@@ -5,6 +5,10 @@ description = ""
 authors = ["Matevz <semprimoznik.matevz@gmail.com>"]
 readme = "README.md"
 
+[tool.poe.tasks]
+fetch-weather-data = "python -m src.data.scripts.fetch_weather_data"
+
+
 [tool.poetry.dependencies]
 python = "^3.12"
 pandas = "^2.2.2"
