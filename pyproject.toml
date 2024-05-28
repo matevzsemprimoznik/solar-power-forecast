@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poe.tasks]
 fetch-weather-data = "python -m src.data.scripts.fetch_weather_data"
 fetch-solar-power-data = "python -m src.data.scripts.fetch_solar_power_data"
+merge-historical-data = "python -m src.data.scripts.merge_historical_data"
+process-data = "python -m src.data.scripts.process_data"
 
 
 [tool.poetry.dependencies]
