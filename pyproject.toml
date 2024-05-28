@@ -10,6 +10,7 @@ fetch-weather-data = "python -m src.data.scripts.fetch_weather_data"
 fetch-solar-power-data = "python -m src.data.scripts.fetch_solar_power_data"
 merge-historical-data = "python -m src.data.scripts.merge_historical_data"
 process-data = "python -m src.data.scripts.process_data"
+select-features = "python -m src.data.scripts.select_features"
 
 
 [tool.poetry.dependencies]

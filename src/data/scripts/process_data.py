@@ -13,7 +13,9 @@ def main():
     for column in df.columns:
         df.rename(columns={column: column.split()[0].lower()}, inplace=True)
 
-    df.to_csv("data/processed/data.csv", index=False, header=True)
+    df = df.dropna()
+
+    df.to_csv("data/processed/data_full_features.csv", index=False, header=True)
 
 
 
