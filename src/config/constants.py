@@ -1,1 +1,3 @@
 POWER_PLANT_PRODUCTION_TARGET = 'kw'
+SEED = 42
+POWER_PRODUCTION_MODEL_NAME = "power_production_model"

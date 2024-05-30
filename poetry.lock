@@ -3957,6 +3957,38 @@ protobuf = ">=3.20.2"
 reference = ["Pillow", "google-re2"]
 
 [[package]]
+name = "onnxconverter-common"
+version = "1.13.0"
+description = "ONNX Converter and Optimization Tools"
+optional = false
+python-versions = "*"
+files = [
+    {file = "onnxconverter-common-1.13.0.tar.gz", hash = "sha256:03db8a6033a3d6590f22df3f64234079caa826375d1fcb0b37b8123c06bf598c"},
+    {file = "onnxconverter_common-1.13.0-py2.py3-none-any.whl", hash = "sha256:5ee1c025ef6c3b4abaede8425bc6b393248941a6cf8c21563d0d0e3f04634a0a"},
+]
+
+[package.dependencies]
+numpy = "*"
+onnx = "*"
+packaging = "*"
+protobuf = "*"
+
+[[package]]
+name = "onnxmltools"
+version = "1.12.0"
+description = "Converts Machine Learning models to ONNX"
+optional = false
+python-versions = "*"
+files = [
+    {file = "onnxmltools-1.12.0-py2.py3-none-any.whl", hash = "sha256:c51608ead3806a50f2cd70d466ee46c6e71a3f315ac629b0dffaa1081206a66c"},
+    {file = "onnxmltools-1.12.0.tar.gz", hash = "sha256:ebdc529a78ce79c4be767cd6535544f983fe9dc0ca10f434194086f1c5be64d1"},
+]
+
+[package.dependencies]
+numpy = "*"
+onnx = "*"
+
+[[package]]
 name = "onnxruntime"
 version = "1.18.0"
 description = "ONNX Runtime is a runtime accelerator for Machine Learning models"
@@ -5866,6 +5898,22 @@ files = [
 ]
 
 [[package]]
+name = "skl2onnx"
+version = "1.16.0"
+description = "Convert scikit-learn models to ONNX"
+optional = false
+python-versions = "*"
+files = [
+    {file = "skl2onnx-1.16.0-py2.py3-none-any.whl", hash = "sha256:7de548580c625bfa5893fe79c9dd3213c3720b12e1ff8e3fd28967da0698242d"},
+    {file = "skl2onnx-1.16.0.tar.gz", hash = "sha256:3370b3d4065ce2dc5933878c3273f4aea41f945cc6514543b13ad2d57f369ce5"},
+]
+
+[package.dependencies]
+onnx = ">=1.2.1"
+onnxconverter-common = ">=1.7.0"
+scikit-learn = ">=0.19"
+
+[[package]]
 name = "smmap"
 version = "5.0.1"
 description = "A pure Python implementation of a sliding window memory map manager"
@@ -7194,4 +7242,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "aa411cb5303523ccf2d5494b5644299a594e46dea1f715fda7fe0dbc5b92eab2"
+content-hash = "5411a6053d854f0966b2d1da037e1ecf1c1ecfed8db2847987b907d197b00554"

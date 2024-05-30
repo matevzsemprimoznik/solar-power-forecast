@@ -11,7 +11,9 @@ fetch-solar-power-data = "python -m src.data.scripts.fetch_solar_power_data"
 merge-historical-data = "python -m src.data.scripts.merge_historical_data"
 process-data = "python -m src.data.scripts.process_data"
 select-features = "python -m src.data.scripts.select_features"
-
+train-model = "python -m src.models.scripts.train_model"
+mlflow-config = "python -m src.models.mlflow_config"
+model-analysis = 'python -m src.models.scripts.model_analysis'
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -31,6 +33,8 @@ dagshub = "^0.3.27"
 tf2onnx = "^1.16.1"
 onnxruntime = "^1.18.0"
 pymongo = "^4.7.2"
+onnxmltools = "^1.12.0"
+skl2onnx = "^1.16.0"
 
 
 [tool.poetry.group.dev.dependencies]
