@@ -5,7 +5,7 @@ from src.data.solar_production_fetcher import ProductionFetcher
 
 def main() -> None:
     production_fetcher = ProductionFetcher()
-    solar_production_data = production_fetcher.fetch_n_last(24)
+    solar_production_data = production_fetcher.fetch_n_last(168)
 
     converter = DataConverter()
     df = converter.basemodel_to_dataframe(solar_production_data)

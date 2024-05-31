@@ -18,8 +18,8 @@ class ProductionFetcher:
 
         results = []
 
-        first_date = datetime.fromtimestamp(raw_data['timestamp'][0], timezone.utc)
-        offset = (first_date.hour * 60 + first_date.minute) % step
+        first_date = datetime.fromtimestamp(raw_data['timestamp'][0], timezone.utc).replace(tzinfo=None)
+        offset = (first_date.hour * step + first_date.minute) % step
         raw_data['timestamp'] = raw_data['timestamp'][offset:]
         raw_data['mw'] = raw_data['mw'][offset:]
 
@@ -29,7 +29,7 @@ class ProductionFetcher:
 
             results.append(
                 Production(
-                    time=datetime.fromtimestamp(date, timezone.utc).replace(minute=0, second=0, microsecond=0).replace(tzinfo=None),
+                    time=datetime.fromtimestamp(date, timezone.utc).replace(tzinfo=None),
                     power=raw_data['mw'][i]
                 )
             )

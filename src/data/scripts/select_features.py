@@ -23,7 +23,7 @@ def main():
     for f in range(X.shape[1]):
         print("%d. feature %s (%f)" % (f + 1, X.columns[indices[f]], importances[indices[f]]))
 
-    X = X[X.columns[indices[:5]]]
+    X = X[X.columns[indices[:10]]]
     X[POWER_PLANT_PRODUCTION_TARGET] = y
 
     X.to_csv("data/processed/data_selected_features.csv", index=False, header=True)

@@ -5,7 +5,7 @@ from src.data.weather_fetcher import WeatherFetcher
 
 def main() -> None:
     weather_fetcher = WeatherFetcher()
-    weather_data = weather_fetcher.fetch_data(None, 24)
+    weather_data = weather_fetcher.fetch_data(None, 168)
 
     converter = DataConverter()
     df = converter.basemodel_to_dataframe(weather_data)
