@@ -41,7 +41,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install --with dev --without win-dev
+          poetry install --with dev --without dev-win
 
       - name: Run Data Api tests
         run: |
