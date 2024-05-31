@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 import requests
 
 from src.data.models.production import Production
-from src.data.models.weather import Weather
 from src.config.settings import settings
 
 
@@ -30,7 +29,7 @@ class ProductionFetcher:
 
             results.append(
                 Production(
-                    time=datetime.fromtimestamp(date, timezone.utc),
+                    time=datetime.fromtimestamp(date, timezone.utc).replace(minute=0, second=0, microsecond=0).replace(tzinfo=None),
                     power=raw_data['mw'][i]
                 )
             )

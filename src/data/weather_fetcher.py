@@ -9,7 +9,7 @@ from src.data.time_fetcher import TimeFetcher
 class WeatherFetcher:
     data_uri = settings.WEATHER_API_URI
 
-    def fetch_data(self, n_next = None):
+    def fetch_data(self, n_next = None, n_last = None):
         response = requests.get(self.data_uri)
         raw_data = response.json()
         hourly_data = raw_data['hourly']
@@ -17,14 +17,24 @@ class WeatherFetcher:
         results = []
 
         time_fetcher = TimeFetcher()
-        target_date = time_fetcher.fetch_gtm_time()
-        if n_next is None:
-            target_date = target_date - timedelta(hours=1)
+        current_date = time_fetcher.fetch_gtm_time()
+
+        current_date = current_date.replace(minute=0, second=0, microsecond=0)
+
+        max_date = current_date
+        min_date = current_date
+
+        if n_next is not None:
+            max_date = max_date + timedelta(hours=n_next)
+        if n_last is not None:
+            min_date = min_date - timedelta(hours=n_last)
 
         for i, date in enumerate(hourly_data['time']):
             date = parser.parse(date)
-            if date < target_date:
+
+            if date < min_date or date > max_date:
                 continue
+
             results.append(
                 Weather(
                     time=date,
@@ -45,13 +55,9 @@ class WeatherFetcher:
                     direct_radiation_instant=hourly_data['direct_radiation_instant'][i],
                     diffuse_radiation_instant=hourly_data['diffuse_radiation_instant'][i],
                     direct_normal_irradiance_instant=hourly_data['direct_normal_irradiance_instant'][i],
+                    global_tilted_irradiance_instant=hourly_data['global_tilted_irradiance_instant'][i],
                     terrestrial_radiation_instant=hourly_data['terrestrial_radiation_instant'][i]
                 )
             )
-            if len(results) == n_next or n_next is None:
-                break
 
         return results
-
-    def fetch_next_n_hours(self, n: int):
-        return self.fetch_data(n)

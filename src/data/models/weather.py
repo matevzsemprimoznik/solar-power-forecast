@@ -21,6 +21,7 @@ class Weather(BaseModel):
     direct_radiation_instant: float
     diffuse_radiation_instant: float
     direct_normal_irradiance_instant: float
+    global_tilted_irradiance_instant: float
     terrestrial_radiation_instant: float
 
     class Config:
@@ -44,5 +45,6 @@ class Weather(BaseModel):
             'direct_radiation_instant': 'direct_radiation_instant (W/m²)',
             'diffuse_radiation_instant': 'diffuse_radiation_instant (W/m²)',
             'direct_normal_irradiance_instant': 'direct_normal_irradiance_instant (W/m²)',
+            'global_tilted_irradiance_instant': 'global_tilted_irradiance_instant (W/m²)',
             'terrestrial_radiation_instant': 'terrestrial_radiation_instant (W/m²)',
         }

@@ -8,7 +8,7 @@ from src.config.constants import POWER_PLANT_PRODUCTION_TARGET
 def main():
     df = pd.read_csv("data/processed/data_full_features.csv")
 
-    X = df.drop(columns=[POWER_PLANT_PRODUCTION_TARGET, 'time', 'timestamp', 'poai'])
+    X = df.drop(columns=[POWER_PLANT_PRODUCTION_TARGET, 'timestamp'])
     y = df[POWER_PLANT_PRODUCTION_TARGET]
 
     model = RandomForestRegressor()
@@ -27,6 +27,7 @@ def main():
     X[POWER_PLANT_PRODUCTION_TARGET] = y
 
     X.to_csv("data/processed/data_selected_features.csv", index=False, header=True)
+
 
 if __name__ == "__main__":
     main()
