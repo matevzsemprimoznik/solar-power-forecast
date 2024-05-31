@@ -1,6 +1,4 @@
-import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score
 
 from src.config.constants import POWER_PLANT_PRODUCTION_TARGET, SEED
 from sklearn.model_selection import train_test_split
@@ -22,9 +20,3 @@ def prepare_data():
     return X_train, X_test, y_train, y_test
 
 
-def evaluate_model_performance(y_true, y_pred):
-    mse = mean_squared_error(y_true, y_pred)
-    mae = mean_absolute_error(y_true, y_pred)
-    evs = explained_variance_score(y_true, y_pred)
-
-    return mse, mae, evs

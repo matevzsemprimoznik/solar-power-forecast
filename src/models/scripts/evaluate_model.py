@@ -5,7 +5,8 @@ from tensorflow import double
 
 from src.config.constants import POWER_PRODUCTION_MODEL_NAME
 from src.models.mlflow_config import mlflow_config
-from src.models.model import prepare_data, evaluate_model_performance
+from src.models.model import prepare_data
+from src.models.model_evaluation import evaluate_model_performance
 from src.models.model_registry import download_artifact
 import onnxruntime as ort
 
