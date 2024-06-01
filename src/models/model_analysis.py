@@ -8,14 +8,14 @@ from xgboost import XGBRegressor
 from src.config.constants import SEED
 import tensorflow as tf
 from mlflow.onnx import log_model as log_onnx_model
-from src.models.model import prepare_data
+from src.models.model_data_preparation import prepare_power_production_model_data
 from skl2onnx.common.data_types import FloatTensorType
 
 
 def model_analysis():
     client = MlflowClient()
     print('Analyzing model')
-    X_train, X_test, y_train, y_test = prepare_data()
+    X_train, X_test, y_train, y_test = prepare_power_production_model_data()
     model = XGBRegressor(random_state=SEED)
 
     input_signature = [('input', FloatTensorType([None, X_train.shape[1]]))]

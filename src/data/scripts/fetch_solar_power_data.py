@@ -1,3 +1,4 @@
+from src.config.constants import FETCH_WINDOW_IN_HOURS
 from src.data.data_coverter import DataConverter
 from src.data.data_saver import DataSaver
 from src.data.solar_production_fetcher import ProductionFetcher
@@ -5,7 +6,7 @@ from src.data.solar_production_fetcher import ProductionFetcher
 
 def main() -> None:
     production_fetcher = ProductionFetcher()
-    solar_production_data = production_fetcher.fetch_n_last(168)
+    solar_production_data = production_fetcher.fetch_n_last(FETCH_WINDOW_IN_HOURS)
 
     converter = DataConverter()
     df = converter.basemodel_to_dataframe(solar_production_data)

@@ -5,7 +5,7 @@ from tensorflow import double
 
 from src.config.constants import POWER_PRODUCTION_MODEL_NAME
 from src.models.mlflow_config import mlflow_config
-from src.models.model import prepare_data
+from src.models.model_data_preparation import prepare_power_production_model_data
 from src.models.model_evaluation import evaluate_model_performance
 from src.models.model_registry import download_artifact
 import onnxruntime as ort
@@ -16,7 +16,7 @@ def main():
 
     model_path = download_artifact(POWER_PRODUCTION_MODEL_NAME, "production", f"models/temp")
 
-    _, X_test, __, y_test = prepare_data()
+    _, X_test, __, y_test = prepare_power_production_model_data()
 
     print(X_test.shape)
     print(X_test.head())

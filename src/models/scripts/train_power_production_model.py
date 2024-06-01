@@ -10,7 +10,7 @@ from xgboost import XGBRegressor
 from mlflow.onnx import log_model as log_onnx_model
 from src.config.constants import SEED, POWER_PRODUCTION_MODEL_NAME
 from src.models.mlflow_config import mlflow_config
-from src.models.model import prepare_data
+from src.models.model_data_preparation import prepare_power_production_model_data
 from src.models.model_evaluation import evaluate_model_performance
 
 
@@ -21,7 +21,7 @@ def main():
 
     mlflow.autolog()
 
-    X_train, X_test, y_train, y_test = prepare_data()
+    X_train, X_test, y_train, y_test = prepare_power_production_model_data()
 
     X_train.columns = [f'f{i}' for i in range(X_train.shape[1])]
 
