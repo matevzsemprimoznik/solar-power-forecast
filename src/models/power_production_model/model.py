@@ -29,10 +29,8 @@ def train_power_production_model():
                    registered_model_name=POWER_PRODUCTION_MODEL_NAME)
 
     model_version = client.get_latest_versions(POWER_PRODUCTION_MODEL_NAME)[0]
-    print(model_version.version)
-    client.set_registered_model_alias(POWER_PRODUCTION_MODEL_NAME, "production", model_version.version)
 
-    X_test.columns = [f'f{i}' for i in range(X_test.shape[1])]
+    client.set_registered_model_alias(POWER_PRODUCTION_MODEL_NAME, "production", model_version.version)
 
     model_predictions = model.predict(X_test)
 

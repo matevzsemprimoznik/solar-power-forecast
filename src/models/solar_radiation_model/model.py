@@ -32,8 +32,6 @@ def train_solar_radiation_model():
 
     client.set_registered_model_alias(SOLAR_RADIATION_MODEL_NAME, "production", model_version.version)
 
-    X_test.columns = [f'f{i}' for i in range(X_test.shape[1])]
-
     model_predictions = model.predict(X_test)
 
     mse_production, mae_production, evs_production = evaluate_model_performance(y_test, model_predictions)
