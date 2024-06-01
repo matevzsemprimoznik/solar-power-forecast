@@ -19,6 +19,12 @@ model-analysis = 'python -m src.models.common.scripts.model_analysis'
 evaluate-power-production-model = "python -m src.models.common.scripts.evaluate_power_production_model"
 evaluate-solar-radiation-model = "python -m src.models.common.scripts.evaluate_solar_radiation_model"
 test-data-api = "pytest tests/api_tests.py"
+data-gx-test = "python -m src.validation.gx"
+data-stability-test = "python -m src.validation.stability"
+data-drift-test = "python -m src.validation.drift"
+validation-preparation = "python -m src.validation.preparation"
+validation-cleanup = "python -m src.validation.cleanup"
+data-tests = ["validation-preparation", "data-gx-test", "data-stability-test", "data-drift-test", "validation-cleanup"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -40,6 +46,8 @@ onnxruntime = "^1.18.0"
 pymongo = "^4.7.2"
 onnxmltools = "^1.12.0"
 skl2onnx = "^1.16.0"
+great-expectations = "^0.18.15"
+evidently = "^0.4.25"
 
 
 [tool.poetry.group.dev.dependencies]

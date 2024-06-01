@@ -63,29 +63,13 @@ jobs:
         run: |
           poetry run poe select-features
 
-#      - name: Prepare data for Validation
-#        run: |
-#          poetry run poe prepare-validation-data
-#
-#      - name: Run Great Expectations
-#        run: |
-#          poetry run poe validate-data
-#
-#      - name: Data Drift
-#        run: |
-#          poetry run poe data-drift
-#
-#      - name: Data Stability Test
-#        run: |
-#          poetry run poe data-stability-test
-#
-#      - name: Kolmogorov-Smirnov Test
-#        run: |
-#          poetry run poe ks-test
+      - name: Run Data Tests and Validation
+        run: |
+          poetry run poe data-tests
 
       - name: Add and Push to DVC
         run: |
-          dvc add data/raw/fetched data/processed
+          dvc add data/raw/fetched data/processed data/validation
           dvc push
 
       - name: Commit and Push files
