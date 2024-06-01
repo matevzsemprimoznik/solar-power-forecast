@@ -18,8 +18,6 @@ def train_power_production_model():
 
     X_train, X_test, y_train, y_test = prepare_power_production_model_data()
 
-    X_train.columns = [f'f{i}' for i in range(X_train.shape[1])]
-
     model = XGBRegressor(random_state=SEED)
     model.fit(X_train, y_train)
 

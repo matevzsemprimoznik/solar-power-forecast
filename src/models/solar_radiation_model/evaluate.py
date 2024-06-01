@@ -16,8 +16,6 @@ def evaluate_solar_radiation_model():
 
     _, X_test, __, y_test = prepare_solar_radiation_model_data()
 
-    X_test.columns = [f'f{i}' for i in range(X_test.shape[1])]
-
     model_predictions = model.run(None, {'input': X_test.values.astype(np.float32)})[0]
 
     mse_production, mae_production, evs_production = evaluate_model_performance(y_test, model_predictions)

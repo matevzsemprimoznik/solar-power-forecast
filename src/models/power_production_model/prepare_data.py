@@ -11,7 +11,6 @@ from src.models.solar_radiation_model.prepare_data import prepare_solar_radiatio
 def prepare_power_production_model_data():
     X_train, X_test, y_train, y_test = prepare_solar_radiation_model_data()
     X = pd.concat([X_train, X_test], axis=0)
-    X.columns = [f'f{i}' for i in range(X.shape[1])]
 
     model = get_artifact(SOLAR_RADIATION_MODEL_NAME, "production")
 
@@ -22,14 +21,10 @@ def prepare_power_production_model_data():
     df['solar_radiation_predicted'] = model_predictions
 
     X = df.drop(columns=[POWER_PLANT_PRODUCTION_TARGET])
+    X.columns = [f'f{i}' for i in range(X.shape[1])]
+
     y = df[POWER_PLANT_PRODUCTION_TARGET]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=SEED)
-
-    print('Splitted data shapes:')
-    print(f"X_train shape: {X_train.shape}")
-    print(f"X_test shape: {X_test.shape}")
-    print(f"y_train shape: {y_train.shape}")
-    print(f"y_test shape: {y_test.shape}\n")
 
     return X_train, X_test, y_train, y_test
