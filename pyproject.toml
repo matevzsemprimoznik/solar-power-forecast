@@ -25,6 +25,7 @@ data-drift-test = "python -m src.validation.drift"
 validation-preparation = "python -m src.validation.preparation"
 validation-cleanup = "python -m src.validation.cleanup"
 data-tests = ["validation-preparation", "data-gx-test", "data-stability-test", "data-drift-test", "validation-cleanup"]
+start-api = "uvicorn src.apps.api.main:app --reload"
 
 [tool.poetry.dependencies]
 python = "^3.12"
