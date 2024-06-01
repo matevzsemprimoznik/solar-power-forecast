@@ -1,4 +1,4 @@
-from src.models.model_analysis import model_analysis
+from src.models.common.model_analysis import model_analysis
 
 
 def main():

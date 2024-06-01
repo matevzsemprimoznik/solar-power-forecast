@@ -1,26 +1,27 @@
 import os
-
 import mlflow
 from mlflow.onnx import load_model as load_onnx
-from onnx import ModelProto
-from src.models.mlflow_config import mlflow_config
+from src.models.common.mlflow_config import MlflowConfig
+import onnxruntime as ort
 
 
-def get_artifact(name: str, alias: str) -> ModelProto:
+def get_artifact(name: str, alias: str):
     try:
-        client = mlflow_config()
+        client = MlflowConfig().get_client()
         model_version = client.get_model_version_by_alias(name, alias)
-        return load_onnx(model_version.source)
+        artifact_proto = load_onnx(model_version.source)
+        return ort.InferenceSession(artifact_proto.SerializeToString())
     except IndexError:
         print(f"Model with name {name} and alias {alias} not found")
         return None
 
 
 def download_artifact(name: str, alias: str, output_path: str):
-    mlflow_config()
+    client = MlflowConfig().get_client()
     artifact_path = f"{output_path}/model"
 
-    model = get_artifact(name, alias)
+    model_version = client.get_model_version_by_alias(name, alias)
+    model = load_onnx(model_version.source)
 
     if not os.path.exists(output_path):
         os.makedirs(output_path)

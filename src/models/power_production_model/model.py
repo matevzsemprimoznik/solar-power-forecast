@@ -1,21 +1,16 @@
 import mlflow
 import onnxmltools
-from mlflow import MlflowClient
 from onnxconverter_common import FloatTensorType
-from onnxmltools import convert_sklearn, convert_xgboost
-from skl2onnx import to_onnx, update_registered_converter
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.pipeline import Pipeline
 from xgboost import XGBRegressor
 from mlflow.onnx import log_model as log_onnx_model
 from src.config.constants import SEED, POWER_PRODUCTION_MODEL_NAME
-from src.models.mlflow_config import mlflow_config
-from src.models.model_data_preparation import prepare_power_production_model_data
-from src.models.model_evaluation import evaluate_model_performance
+from src.models.common.mlflow_config import MlflowConfig
+from src.models.power_production_model.prepare_data import prepare_power_production_model_data
+from src.models.common.model_evaluation import evaluate_model_performance
 
 
-def main():
-    client = mlflow_config()
+def train_power_production_model():
+    client = MlflowConfig().get_client()
 
     mlflow.start_run(run_name=POWER_PRODUCTION_MODEL_NAME, nested=True)
 
@@ -28,7 +23,8 @@ def main():
     model = XGBRegressor(random_state=SEED)
     model.fit(X_train, y_train)
 
-    onnx_model = onnxmltools.convert_xgboost(model, initial_types=[('input', FloatTensorType([None, X_train.shape[1]]))])
+    onnx_model = onnxmltools.convert_xgboost(model,
+                                             initial_types=[('input', FloatTensorType([None, X_train.shape[1]]))])
 
     log_onnx_model(onnx_model=onnx_model,
                    artifact_path=POWER_PRODUCTION_MODEL_NAME,
@@ -49,7 +45,3 @@ def main():
     mlflow.log_metric("Explained Variance Score", evs_production)
 
     mlflow.end_run()
-
-
-if __name__ == "__main__":
-    main()

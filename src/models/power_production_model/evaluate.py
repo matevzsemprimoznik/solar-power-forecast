@@ -1,29 +1,22 @@
 import shutil
 
 import numpy as np
-from tensorflow import double
 
 from src.config.constants import POWER_PRODUCTION_MODEL_NAME
-from src.models.mlflow_config import mlflow_config
-from src.models.model_data_preparation import prepare_power_production_model_data
-from src.models.model_evaluation import evaluate_model_performance
-from src.models.model_registry import download_artifact
-import onnxruntime as ort
+from src.models.common.mlflow_config import MlflowConfig
+from src.models.power_production_model.prepare_data import prepare_power_production_model_data
+from src.models.common.model_evaluation import evaluate_model_performance
+from src.models.common.model_registry import download_artifact, get_artifact
 
 
-def main():
-    client = mlflow_config()
+def evaluate_power_production_model():
+    client = MlflowConfig().get_client()
 
-    model_path = download_artifact(POWER_PRODUCTION_MODEL_NAME, "production", f"models/temp")
+    model = get_artifact(POWER_PRODUCTION_MODEL_NAME, "production")
 
     _, X_test, __, y_test = prepare_power_production_model_data()
 
-    print(X_test.shape)
-    print(X_test.head())
-
     X_test.columns = [f'f{i}' for i in range(X_test.shape[1])]
-
-    model = ort.InferenceSession(model_path)
 
     model_predictions = model.run(None, {'input': X_test.values.astype(np.float32)})[0]
 
@@ -36,6 +29,3 @@ def main():
 
     shutil.rmtree(f"models/temp/", ignore_errors=True)
 
-
-if __name__ == "__main__":
-    main()

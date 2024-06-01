@@ -12,10 +12,12 @@ merge-historical-data = "python -m src.data.scripts.merge_historical_data"
 process-historical-data = "python -m src.data.scripts.process_historical_data"
 process-data = "python -m src.data.scripts.process_data"
 select-features = "python -m src.data.scripts.select_features"
-train-power-production-model = "python -m src.models.scripts.train_power_production_model"
-mlflow-config = "python -m src.models.mlflow_config"
-model-analysis = 'python -m src.models.scripts.model_analysis'
-evaluate-model = "python -m src.models.scripts.evaluate_model"
+train-power-production-model = "python -m src.models.common.scripts.train_power_production_model"
+train-solar-radiation-model = "python -m src.models.common.scripts.train_solar_radiation_model"
+mlflow-config = "python -m src.models.common.mlflow_config"
+model-analysis = 'python -m src.models.common.scripts.model_analysis'
+evaluate-power-production-model = "python -m src.models.common.scripts.evaluate_power_production_model"
+evaluate-solar-radiation-model = "python -m src.models.common.scripts.evaluate_solar_radiation_model"
 test-data-api = "pytest tests/api_tests.py"
 
 [tool.poetry.dependencies]
