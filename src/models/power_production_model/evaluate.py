@@ -12,9 +12,11 @@ from src.models.common.model_registry import download_artifact, get_artifact
 def evaluate_power_production_model():
     client = MlflowConfig().get_client()
 
-    model = get_artifact(POWER_PRODUCTION_MODEL_NAME, "production")
+    model = get_artifact(POWER_PRODUCTION_MODEL_NAME, "production").get('model')
 
-    _, X_test, __, y_test = prepare_power_production_model_data()
+    print(get_artifact(POWER_PRODUCTION_MODEL_NAME, "production").get('metadata'))
+
+    _, X_test, _, y_test, _ = prepare_power_production_model_data()
 
     model_predictions = model.run(None, {'input': X_test.values.astype(np.float32)})[0]
 

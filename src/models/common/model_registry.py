@@ -10,7 +10,11 @@ def get_artifact(name: str, alias: str):
         client = MlflowConfig().get_client()
         model_version = client.get_model_version_by_alias(name, alias)
         artifact_proto = load_onnx(model_version.source)
-        return ort.InferenceSession(artifact_proto.SerializeToString())
+
+        return {
+            "model": ort.InferenceSession(artifact_proto.SerializeToString()),
+            "metadata": artifact_proto.metadata_props
+        }
     except IndexError:
         print(f"Model with name {name} and alias {alias} not found")
         return None

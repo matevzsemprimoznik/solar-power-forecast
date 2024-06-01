@@ -12,9 +12,9 @@ from src.models.solar_radiation_model.prepare_data import prepare_solar_radiatio
 def evaluate_solar_radiation_model():
     client = MlflowConfig().get_client()
 
-    model = get_artifact(SOLAR_RADIATION_MODEL_NAME, "production")
+    model = get_artifact(SOLAR_RADIATION_MODEL_NAME, "production").get('model')
 
-    _, X_test, __, y_test = prepare_solar_radiation_model_data()
+    _, X_test, _, y_test, _ = prepare_solar_radiation_model_data()
 
     model_predictions = model.run(None, {'input': X_test.values.astype(np.float32)})[0]
 
