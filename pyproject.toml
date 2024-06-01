@@ -26,6 +26,7 @@ validation-preparation = "python -m src.validation.preparation"
 validation-cleanup = "python -m src.validation.cleanup"
 data-tests = ["validation-preparation", "data-gx-test", "data-stability-test", "data-drift-test", "validation-cleanup"]
 start-api = "uvicorn src.apps.api.main:app --reload"
+predict-power-production = "python -m src.models.common.scripts.predict_power_production"
 
 [tool.poetry.dependencies]
 python = "^3.12"

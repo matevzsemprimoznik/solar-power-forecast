@@ -30,7 +30,7 @@ class ProductionFetcher:
             results.append(
                 Production(
                     time=datetime.fromtimestamp(date, timezone.utc).replace(tzinfo=None),
-                    power=raw_data['mw'][i]
+                    power=raw_data['mw'][i] * 1000000
                 )
             )
             if len(results) == n:

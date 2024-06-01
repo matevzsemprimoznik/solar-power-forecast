@@ -1,8 +1,8 @@
-name: Data Pipeline
+name: Prediction Pipeline
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -19,7 +19,7 @@ env:
   MONGO_URI: ${{ secrets.MONGO_URI }}
 
 jobs:
-  data:
+  prediction:
     runs-on: ubuntu-latest
     steps:
 
@@ -48,45 +48,6 @@ jobs:
         run: |
           poetry run poe test-data-api
 
-      - name: Fetch Power Plant data
+      - name: Predict Power Production
         run: |
-          poetry run poe fetch-power-plant-data
-
-      - name: Fetch Weather data
-        run: |
-          poetry run poe fetch-weather-data
-
-      - name: Process data
-        run: |
-          poetry run poe process-data
-
-      - name: Feature Selection
-        run: |
-          poetry run poe select-features
-
-      - name: Run Data Tests and Validation
-        run: |
-          poetry run poe data-tests
-
-      - name: Add and Push to DVC
-        run: |
-          dvc add data/raw/fetched data/processed data/validation
-          dvc push
-
-      - name: Commit and Push files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git pull
-          git diff-index --quiet HEAD || (git commit -a -m "action: fetch latest data" --allow-empty)
-          git push
-
-#      - name: Deploy DataDocs to Netlify
-#        uses: nwtgck/actions-netlify@v1.2
-#        with:
-#          publish-dir: "reports"
-#          production-deploy: true
-#        env:
-#          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-#          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          poetry run poe predict-power-production

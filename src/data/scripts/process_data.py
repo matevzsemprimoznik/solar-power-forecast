@@ -6,7 +6,7 @@ def main():
     df_weather = pd.read_csv("data/raw/fetched/weather.csv")
 
     df_power_plant_production['time'] = pd.to_datetime(df_power_plant_production['time'])
-    df_power_plant_production['power'] = df_power_plant_production['power'] * 1000000
+    df_power_plant_production['power'] = df_power_plant_production['power']
     df_weather['time'] = pd.to_datetime(df_weather['time'])
 
     df = pd.merge(df_power_plant_production, df_weather, left_on='time', right_on='time', how='inner')

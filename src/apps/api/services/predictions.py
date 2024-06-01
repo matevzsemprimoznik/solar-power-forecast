@@ -70,7 +70,7 @@ class PredictionsService:
 
         df['power_production_predicted'] = model_predictions
 
-        df_predictions = df[['time', 'power_production_predicted']]
+        df_predictions = df[['time', 'power_production_predicted']].copy(deep=True)
         df_predictions.rename(columns={'power_production_predicted': 'power'}, inplace=True)
         df_predictions.rename(columns={'time': 'date'}, inplace=True)
 
