@@ -82,6 +82,7 @@ class ProductionService:
         return df_predictions.to_dict(orient='records')
 
     def history(self, start_date_str, end_date_str):
+        print(start_date_str, end_date_str)
         try:
             start_date = convert_to_datetime(start_date_str)
             end_date = convert_to_datetime(end_date_str)
@@ -99,6 +100,8 @@ class ProductionService:
 
         if start_date == end_date:
             end_date = end_date + pd.DateOffset(days=1) - pd.DateOffset(hours=1)
+
+        print(start_date, end_date)
 
         current_date = TimeFetcher().fetch_gtm_time()
 

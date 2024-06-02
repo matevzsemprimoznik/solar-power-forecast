@@ -18,18 +18,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function convertStringToDate(dateString: string) {
-  const d = new Date(dateString);
-  return new Date(
-    Date.UTC(
-      d.getUTCFullYear(),
-      d.getUTCMonth(),
-      d.getUTCDate(),
-      d.getUTCHours(),
-      d.getUTCMinutes(),
-      d.getUTCSeconds(),
-      d.getUTCMilliseconds()
-    )
-  );
+  const date = new Date(dateString);
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
 }
 
 export function getCurrentUtcDate() {

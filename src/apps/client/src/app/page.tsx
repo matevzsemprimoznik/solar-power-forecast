@@ -8,48 +8,19 @@ import { useHistory } from '@/lib/hooks/use-history';
 import {
   Brush,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
   LineChart,
   ReferenceArea,
+  ReferenceLine,
   ResponsiveContainer,
+  Scatter,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
-
-const pdata = [
-  {
-    name: 'MongoDb',
-    student: 11,
-    fees: 120,
-  },
-  {
-    name: 'Javascript',
-    student: 15,
-    fees: 12,
-  },
-  {
-    name: 'PHP',
-    student: 5,
-    fees: 10,
-  },
-  {
-    name: 'Java',
-    student: 10,
-    fees: 5,
-  },
-  {
-    name: 'C#',
-    student: 9,
-    fees: 4,
-  },
-  {
-    name: 'C++',
-    student: 10,
-    fees: 8,
-  },
-];
+import { format, parseISO } from 'date-fns';
 
 const currentDateUtc = getCurrentUtcDate();
 const yesterdayStartDate = new Date(currentDateUtc);
@@ -64,7 +35,7 @@ lastWeekStartDate.setDate(lastWeekStartDate.getDate() - 7);
 
 const lastWeekEndDate = new Date(lastWeekStartDate);
 lastWeekEndDate.setHours(23, 59, 59, 999);
-lastWeekEndDate.setDate(lastWeekEndDate.getDate() + 6);
+lastWeekEndDate.setDate(lastWeekEndDate.getDate() + 7);
 
 export default function Home() {
   const { data: predictions } = usePredictions();
@@ -120,30 +91,29 @@ export default function Home() {
   const production = useMemo(() => {
     if (!productionLastWeek || !predictions) return [];
     const merged = [...productionLastWeek, ...predictions];
+
+    const targetDate = new Date();
+    targetDate.setHours(targetDate.getHours() + 2, 0, 0, 0);
+
     return merged.map(({ date, power }) => ({
       date: date.getTime(),
       day: `${date.getDate()}/${date.getMonth() + 1}`,
-      hour: `${date.getHours()}:00`,
-      power: power / 1000000,
+      power:
+        date.getTime() < targetDate.getTime()
+          ? (power / 1000000).toFixed(2)
+          : null,
+      prediction:
+        date.getTime() >= new Date().getTime()
+          ? (power / 1000000).toFixed(2)
+          : null,
     }));
   }, [productionLastWeek, predictions]);
+  console.log(production);
 
   const startBrushIndex = useMemo(() => {
     const currentTime = getCurrentUtcDate();
     return production.findIndex((p) => p.date >= currentTime.getTime()) - 5;
   }, [production]);
-
-  const referenceAreaRange = useMemo(() => {
-    const currentTime = getCurrentUtcDate();
-    const start = new Date(currentTime);
-    start.setHours(start.getHours(), 0, 0, 0);
-
-    const end = new Date(start);
-    end.setHours(end.getHours() + 1);
-    return { start: start.getTime(), end: end.getTime() };
-  }, []);
-
-  console.log(referenceAreaRange);
 
   return (
     <div className='w-full h-full bg-neutral-light p-10'>
@@ -151,71 +121,49 @@ export default function Home() {
       <Section title='Summary'>
         <div className='flex gap-3'>
           <PowerCard
-            className='w-full'
+            className='w-full border-2 border-tint-secondary'
             title='Next Hour:'
             value={covertToBestUnit(nextHourPrediction, 'W')}
           />
           <PowerCard
-            className='w-full'
+            className='w-full border-2 border-tint-secondary'
             title='Tommorow:'
             value={covertToBestUnit(totalNextDay, 'Wh')}
           />
           <PowerCard
-            className='w-full'
+            className='w-full border-2 border-tint'
             title='Yesterday:'
             value={covertToBestUnit(totalYesterday, 'Wh')}
           />
           <PowerCard
-            className='w-full'
+            className='w-full border-2 border-tint'
             title='Last Week:'
             value={covertToBestUnit(totalLastWeek, 'Wh')}
           />
         </div>
       </Section>
       <Section title='Production Chart'>
-        <ResponsiveContainer
-          width='100%'
-          aspect={2.5}
-          className='bg-white  shadow-sm rounded-lg p-4'
-        >
-          <LineChart
-            width={500}
-            height={300}
+        <ResponsiveContainer width='100%' height={600}>
+          <ComposedChart
             data={production}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis
               xAxisId={0}
-              dy={0}
               dataKey='date'
-              interval={0}
-              minTickGap={100}
-              tickLine={false}
-              hide
+              type='number'
+              domain={['dataMin', 'dataMax']}
+              scale={'time'}
+              tickFormatter={(tick) => format(new Date(tick), 'HH:mm')}
             />
-            <XAxis
-              xAxisId={1}
-              dy={0}
-              dataKey='hour'
-              interval={0}
-              minTickGap={100}
-              tickLine={false}
+            <XAxis xAxisId={1} dataKey='day' interval={5} />
+
+            <YAxis tickFormatter={(tick) => tick + ' MW'} />
+            <Tooltip
+              labelFormatter={(label) => format(new Date(label), 'MM/dd HH:mm')}
+              formatter={(value) => value + ' MW'}
             />
-            <XAxis
-              xAxisId={2}
-              dy={0}
-              dataKey='day'
-              interval={24}
-              tickLine={false}
-            />
-            <YAxis />
-            <Tooltip />
             <Legend />
             <Line
               type='monotone'
@@ -223,15 +171,17 @@ export default function Home() {
               stroke='#8884d8'
               activeDot={{ r: 8 }}
               xAxisId={0}
+              strokeWidth={2}
             />
-            <ReferenceArea
+            <Line
+              type='monotone'
+              dataKey='prediction'
+              stroke='#80ed99'
+              activeDot={{ r: 8 }}
               xAxisId={0}
-              x1={referenceAreaRange.start}
-              x2={referenceAreaRange.end}
-              label='Current Time'
-              className='bg-white'
-              fill={'rgba(136,132,216,0.12)'}
+              strokeWidth={2}
             />
+            <ReferenceLine x={new Date().getTime()} label={'Current Time'} />
             <Brush
               dataKey='power'
               height={30}
@@ -239,7 +189,7 @@ export default function Home() {
               startIndex={startBrushIndex}
               endIndex={startBrushIndex + 10}
             />
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </Section>
     </div>

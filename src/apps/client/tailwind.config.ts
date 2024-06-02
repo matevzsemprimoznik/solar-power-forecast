@@ -12,6 +12,8 @@ const config: Config = {
         neutral: {
           light: '#f6f7fb',
         },
+        tint: '#8884d8',
+        'tint-secondary': '#80ed99',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
