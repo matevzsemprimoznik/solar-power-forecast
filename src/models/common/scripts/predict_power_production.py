@@ -9,7 +9,7 @@ from src.data.solar_production_fetcher import ProductionFetcher
 
 if __name__ == "__main__":
     client = TestClient(app)
-    response = client.get("/predict")
+    response = client.get("/production/predict")
 
     prediction = response.json()["prediction"]
 
