@@ -62,7 +62,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: Docker Build Api
-        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG .
+        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG -f src/apps/api/Dockerfile .
 
       - name: DockerHub Push Api
         run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG
