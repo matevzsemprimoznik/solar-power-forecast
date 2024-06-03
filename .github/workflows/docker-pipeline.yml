@@ -2,6 +2,17 @@ name: Docker Pipeline
 
 on:
   workflow_dispatch:
+    inputs:
+      build_api:
+        description: 'Build API'
+        required: false
+        default: true
+        type: boolean
+      build_ui:
+        description: 'Build UI'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -20,6 +31,7 @@ env:
 jobs:
   main:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -62,13 +74,17 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: Docker Build Api
+        if: github.event.inputs.build_api == 'true'
         run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG -f src/apps/api/Dockerfile .
 
       - name: DockerHub Push Api
+        if: github.event.inputs.build_api == 'true'
         run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG
 
-#      - name: Docker Build UI
-#        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_UI}}:$TAG --build-arg NEXT_PUBLIC_API_URL_ARG=${{ secrets.NEXT_PUBLIC_API_URL }} --build-arg NEXT_PUBLIC_MAPBOX_STYLE_ARG=${{ secrets.NEXT_PUBLIC_MAPBOX_STYLE }} --build-arg NEXT_PUBLIC_MAPBOX_TOKEN_ARG=${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }} ./src/client/mbajk-forecast
-#
-#      - name: DockerHub Push UI
-#        run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_UI}}:$TAG
+      - name: Docker Build UI
+        if: github.event.inputs.build_ui == 'true'
+        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_UI}}:$TAG --build-arg NEXT_PUBLIC_API_URL_ARG=${{ secrets.NEXT_PUBLIC_API_URL }} --build-arg NEXT_PUBLIC_MAPBOX_STYLE_ARG=${{ secrets.NEXT_PUBLIC_MAPBOX_STYLE }} --build-arg NEXT_PUBLIC_MAPBOX_TOKEN_ARG=${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }} ./src/client/mbajk-forecast
+
+      - name: DockerHub Push UI
+        if: github.event.inputs.build_ui == 'true'
+        run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_UI}}:$TAG
