@@ -4,12 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       build_api:
-        description: 'Build API'
+        description: 'Build and Deploy API'
         required: false
         default: true
         type: boolean
       build_ui:
-        description: 'Build UI'
+        description: 'Build and Deploy UI'
+        required: false
+        default: true
+        type: boolean
+      build_model_management_api:
+        description: 'Build and Deploy Model Management API'
         required: false
         default: true
         type: boolean
@@ -80,6 +85,14 @@ jobs:
       - name: DockerHub Push Api
         if: github.event.inputs.build_api == 'true'
         run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_API}}:$TAG
+
+      - name: Docker Build Model Management Api
+        if: github.event.inputs.build_model_management_api == 'true'
+        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_MODEL_MANAGEMENT_API}}:$TAG -f src/apps/model_management_api/Dockerfile .
+
+      - name: DockerHub Push Model Management Api
+        if: github.event.inputs.build_model_management_api == 'true'
+        run: docker push ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_MODEL_MANAGEMENT_API}}:$TAG
 
       - name: Docker Build UI
         if: github.event.inputs.build_ui == 'true'

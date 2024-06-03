@@ -25,10 +25,8 @@ COPY src/apps/api ./app/src/apps/api
 
 COPY src/config ./app/src/config
 
-COPY src/data ./app/src/data
-
 COPY src/models ./app/src/models
 
 WORKDIR /app
 
-CMD ["uvicorn", "src.apps.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.apps.api.main:app", "--host", "0.0.0.0", "--port", "5000"]

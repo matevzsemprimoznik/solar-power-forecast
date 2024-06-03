@@ -1,11 +1,6 @@
-from datetime import datetime
-from typing import List
-
 import numpy as np
 import pandas as pd
 from pandas import NaT
-
-from src.apps.api.models.predictions import PredictionMultipleOutput
 from src.apps.api.utils.utils import convert_to_datetime
 from src.config.constants import POWER_PRODUCTION_MODEL_NAME, SOLAR_RADIATION_MODEL_NAME
 from src.data.solar_production_fetcher import ProductionFetcher

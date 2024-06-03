@@ -1,7 +1,4 @@
-import json
-
 import requests
-
 from src.config.settings import settings
 from src.models.common.mlflow_config import MlflowConfig
 
