@@ -15,6 +15,7 @@ env:
   MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
   DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
   MONGO_URI: ${{ secrets.MONGO_URI }}
+  PRODUCTION_API_URI: ${{ secrets.PRODUCTION_API_URI }}
 
 jobs:
   main:
