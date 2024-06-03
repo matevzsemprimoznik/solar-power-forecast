@@ -29,3 +29,10 @@ def history(start_date: str | None = None, end_date: str | None = None):
     return {
         "history": production_service.history(start_date, end_date)
     }
+
+
+@production_router.put("/update-models")
+def update_models():
+    return {
+        "message": production_service.update_models()
+    }

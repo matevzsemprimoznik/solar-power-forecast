@@ -113,3 +113,9 @@ class ProductionService:
         production_data = [data.dict() for data in production_data if start_date <= data.time <= end_date]
 
         return production_data[::-1]
+
+    def update_models(self):
+        self.power_production_artifact = get_artifact(POWER_PRODUCTION_MODEL_NAME, "production")
+        self.solar_radiation_artifact = get_artifact(SOLAR_RADIATION_MODEL_NAME, "production")
+
+        return "Models updated successfully!"

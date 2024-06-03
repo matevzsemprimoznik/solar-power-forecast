@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     MLFLOW_TRACKING_PASSWORD: str
     DAGSHUB_TOKEN: str
     MONGO_URI: str
+    PRODUCTION_API_URI: str
 
     model_config = SettingsConfigDict(env_file=".env")
 
