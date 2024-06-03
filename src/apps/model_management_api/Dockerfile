@@ -25,6 +25,8 @@ COPY src/apps/api ./app/src/apps/api
 
 COPY src/config ./app/src/config
 
+COPY src/data ./app/src/data
+
 COPY src/models ./app/src/models
 
 WORKDIR /app
