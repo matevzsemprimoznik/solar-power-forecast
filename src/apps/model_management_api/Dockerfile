@@ -21,11 +21,9 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY src/apps/api ./app/src/apps/api
+COPY src/apps/model_management_api ./app/src/apps/model_management_api
 
 COPY src/config ./app/src/config
-
-COPY src/data ./app/src/data
 
 COPY src/models ./app/src/models
 
