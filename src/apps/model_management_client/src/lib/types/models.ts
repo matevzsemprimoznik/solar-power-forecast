@@ -13,6 +13,7 @@ export interface Model {
   tags: Record<string, any>;
   user_id: string;
   version: string;
+  metrics: Record<string, number>;
 }
 
 export interface MoveModelToProductionData {

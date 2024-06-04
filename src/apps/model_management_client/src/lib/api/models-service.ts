@@ -1,10 +1,10 @@
 import { modelsManagementApi } from '@/lib/api/axios';
 import axios from 'axios';
-import { MoveModelToProductionData } from '@/lib/types/models';
+import { Model, MoveModelToProductionData } from '@/lib/types/models';
 
 export const getModels = async () => {
     const {data} = await modelsManagementApi.get('/models');
-    return data;
+    return data as Model[];
 }
 
 export const moveModelToProduction = async (input: MoveModelToProductionData) => {

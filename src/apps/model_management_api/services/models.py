@@ -29,6 +29,7 @@ class ModelsService:
             properties = model.__dict__
             properties = {key.strip("_"): value for key, value in properties.items()}
             properties['aliases'] = []
+            properties['metrics'] = self.mlflow_client.get_run(model.run_id).data.metrics
             models_with_aliases.append(properties)
 
         for model in models_with_aliases:
