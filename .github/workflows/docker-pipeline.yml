@@ -92,7 +92,7 @@ jobs:
 
       - name: Docker Build Model Management Api
         if: github.event.inputs.build_model_management_api == 'true'
-        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_MODEL_MANAGEMENT_API}}:$TAG -f src/apps/model_management_api/Dockerfile .
+        run: docker build -t ${{secrets.DOCKER_REPO}}/${{secrets.DOCKER_IMAGE_MODEL_MANAGEMENT_API}}:$TAG -f src/apps/model_management_api/Dockerfile --no-cache .
 
       - name: DockerHub Push Model Management Api
         if: github.event.inputs.build_model_management_api == 'true'
