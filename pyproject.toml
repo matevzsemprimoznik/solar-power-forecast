@@ -51,6 +51,8 @@ onnxmltools = "^1.12.0"
 skl2onnx = "^1.16.0"
 great-expectations = "^0.18.15"
 evidently = "^0.4.25"
+shap = "^0.45.1"
+pusher = "^3.3.2"
 
 
 [tool.poetry.group.dev.dependencies]

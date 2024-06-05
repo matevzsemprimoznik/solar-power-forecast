@@ -1,5 +1,6 @@
 import mlflow
 import onnxmltools
+from matplotlib import pyplot as plt
 from onnxconverter_common import FloatTensorType
 from xgboost import XGBRegressor
 from mlflow.onnx import log_model as log_onnx_model
@@ -8,9 +9,10 @@ from src.models.common.mlflow_config import MlflowConfig
 from src.models.common.model import save_onnx_metadata
 from src.models.power_production_model.prepare_data import prepare_power_production_model_data
 from src.models.common.model_evaluation import evaluate_model_performance
-
+import shap
 
 def train_power_production_model():
+    print("Training power production model")
     client = MlflowConfig().get_client()
 
     mlflow.start_run(run_name=POWER_PRODUCTION_MODEL_NAME, nested=True)
@@ -42,5 +44,28 @@ def train_power_production_model():
     mlflow.log_metric("Mean Squared Error", mse_production)
     mlflow.log_metric("Mean Absolute Error", mae_production)
     mlflow.log_metric("Explained Variance Score", evs_production)
+
+    # SHAP
+    X_train, _, y_train, _, _ = prepare_power_production_model_data(serialize_columns=False)
+    model = XGBRegressor(random_state=SEED)
+    model.fit(X_train, y_train)
+    explainer = shap.Explainer(model)
+    shap_values = explainer(X_train, check_additivity=False)
+
+    beeswarm_plot_path = "shap_beeswarm.png"
+    plt.subplots_adjust(left=0.4)
+    shap.plots.beeswarm(shap_values, show=False)
+    plt.savefig(beeswarm_plot_path, bbox_inches='tight')
+    plt.close()
+
+    mlflow.log_artifact(beeswarm_plot_path)
+
+    bar_plot_path = "shap_bar.png"
+    plt.subplots_adjust(left=0.4)
+    shap.plots.bar(shap_values, show=False)
+    plt.savefig(bar_plot_path, bbox_inches='tight')
+    plt.close()
+
+    mlflow.log_artifact(bar_plot_path)
 
     mlflow.end_run()

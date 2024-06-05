@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     DAGSHUB_TOKEN: str
     MONGO_URI: str
     PRODUCTION_API_URI: str
+    PUSHER_APP_ID: str
+    PUSHER_APP_KEY: str
+    PUSHER_APP_SECRET: str
+    PUSHER_APP_CLUSTER: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

@@ -137,10 +137,14 @@ export const columns: ColumnDef<Model>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-
-              onClick={() => dispatchEvent("move-model-to-production-event", model)}
+              onClick={() => dispatchEvent("move-models-to-production-event", model)}
             >
               Move this model to Production
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => dispatchEvent("train-model", model)}
+            >
+              Re-Train this model
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

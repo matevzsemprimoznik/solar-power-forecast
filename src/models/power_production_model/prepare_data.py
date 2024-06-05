@@ -9,7 +9,7 @@ from src.models.common.model_registry import get_artifact
 from src.models.solar_radiation_model.prepare_data import prepare_solar_radiation_model_data
 
 
-def prepare_power_production_model_data():
+def prepare_power_production_model_data(serialize_columns: bool = True):
     X_train, X_test, y_train, y_test, _ = prepare_solar_radiation_model_data()
     X = pd.concat([X_train, X_test], axis=0)
 
@@ -22,8 +22,10 @@ def prepare_power_production_model_data():
     df['solar_radiation_predicted'] = model_predictions
 
     X = df.drop(columns=[POWER_PLANT_PRODUCTION_TARGET])
-    column_names_map = serialize_column_names(X.columns)
-    X.columns = column_names_map.values()
+    column_names_map = None
+    if serialize_columns:
+        column_names_map = serialize_column_names(X.columns)
+        X.columns = column_names_map.values()
 
     y = df[POWER_PLANT_PRODUCTION_TARGET]
 

@@ -18,6 +18,10 @@ env:
   DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_TOKEN }}
   MONGO_URI: ${{ secrets.MONGO_URI }}
   PRODUCTION_API_URI: ${{ secrets.PRODUCTION_API_URI }}
+  PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
+  PUSHER_APP_KEY: ${{ secrets.PUSHER_APP_KEY }}
+  PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
+  PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
 
 jobs:
   data:

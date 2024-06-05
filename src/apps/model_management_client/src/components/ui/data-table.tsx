@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table"
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -45,6 +46,8 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   })
+
+  const router = useRouter()
 
   return (
     <div>
@@ -83,7 +86,9 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className='cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800'
                   data-state={row.getIsSelected() && "selected"}
+                  onDoubleClick={() => router.push(`/models/${(data[row.index] as {id: string}).id}`)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

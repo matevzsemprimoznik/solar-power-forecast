@@ -11,3 +11,13 @@ export const moveModelToProduction = async (input: MoveModelToProductionData) =>
     const {data} = await modelsManagementApi.post(`/models/production/name/${input.name}/version/${input.version}`);
     return data;
 }
+
+export const getModel = async (id: string) => {
+    const {data} = await modelsManagementApi.get(`/models/${id}`);
+    return data as Model;
+}
+
+export const trainModel = async (modelName: string) => {
+    const {data} = await modelsManagementApi.post(`/models/train/${modelName}`);
+    return data;
+}

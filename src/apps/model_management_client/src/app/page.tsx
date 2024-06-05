@@ -9,22 +9,37 @@ import { useMoveModelToProduction } from '@/lib/hooks/use-move-model-to-producti
 import { useQueryClient } from '@tanstack/react-query';
 import { modelsKeys } from '@/lib/hooks/key-factories';
 import { useToast } from '@/components/ui/use-toast';
+import { useModelTrain } from '@/lib/hooks/use-model-train';
+import { Model } from '@/lib/types/models';
+import CustomModalDescription from '@/components/ui/custom-modal';
+import { pusherClient } from '@/lib/utils';
+import { channel } from 'node:diagnostics_channel';
 
 export default function Home() {
   const {data: models, isLoading} = useModels();
-  const {addListener} = useEventDispatcher();
+  const {addListener, removeListener} = useEventDispatcher();
   const queryClient = useQueryClient();
-  const { toast, dismiss } = useToast()
-  const [toastId, setToastId
-  ] = useState('')
-
+  const { toast } = useToast()
   const {mutateAsync: moveModelToProduction} = useMoveModelToProduction({
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: modelsKeys.all
       });
-      console.log(toastId);
-      dismiss(toastId);
+      toast({
+        title: 'Model Move to Production',
+        description: 'Model is moving to production. This may take a while. You will be notified when the model is in production.'
+      })
+    }
+  })
+  const {mutateAsync: trainModel} = useModelTrain({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: modelsKeys.all
+      });
+      toast({
+        title: 'Model Train',
+        description: 'Your model is being trained. This may take a while. You will be notified when the training is complete.'
+      })
     }
   })
 
@@ -32,37 +47,56 @@ export default function Home() {
     if (!models) return [];
     return models.map(model => ({
       ...model,
-      'metric-evs': model.metrics['Explained Variance Score'].toFixed(3),
-      'metric-mae': model.metrics['Mean Absolute Error'].toFixed(3),
-      'metric-mse': model.metrics['Mean Squared Error'].toFixed(3),
+      'metric-evs': model.metrics['evs'].toFixed(3),
+      'metric-mae': model.metrics['mae'].toFixed(3),
+      'metric-mse': model.metrics['mse'].toFixed(3),
     }))
   }, [models])
 
 
 
   useEffect(() => {
-    addListener('move-model-to-production-event', async (data) => {
-      console.log('Moving model to production from dispatch');
-      setTimeout(() => {
-        const t = toast({
-          duration: 1000000,
-          title: 'Model Management',
-          description: <div className='flex justify-center items-center bg-white dark:invert'>
-            <span className='mr-1'>Moving model to production </span>
-            <span className='animate-bounce [animation-delay:-0.3s] ml-0 font-bold'>.</span>
-            <span className='animate-bounce [animation-delay:-0.15s] ml-0 font-bold'>.</span>
-            <span className='animate-bounce ml-0 font-bold'>.</span>
-          </div>
-        })
-        setToastId(t.id)
-      }, 0)
+    const moveModelToProductionListener = async (data: Model) => {
       await moveModelToProduction(data);
-    });
+    }
+    const trainModelListener = async (data: Model) => {
+      await trainModel(data.name);
+    }
+
+    addListener('move-models-to-production-event', moveModelToProductionListener);
+    addListener('train-model', trainModelListener)
+
+    return () => {
+      removeListener('move-models-to-production-event', moveModelToProductionListener);
+      removeListener('train-model', trainModelListener);
+    }
   }, [addListener]);
+
+  useEffect(() => {
+    const solarPowerModelManagerChannel = pusherClient.subscribe('solar-power-model-management-api');
+    solarPowerModelManagerChannel.bind('model-trained-successfully', async (data: any) => {
+      toast({
+        title: 'Model Trained',
+        description: data.message
+      })
+      await queryClient.invalidateQueries({
+        queryKey: modelsKeys.all
+      });
+    })
+    solarPowerModelManagerChannel.bind('model-moved-to-production-successfully', async (data: any) => {
+      toast({
+        title: 'Model moved to Production',
+        description: data.message
+      })
+      await queryClient.invalidateQueries({
+        queryKey: modelsKeys.all
+      });
+    })
+  }, []);
 
 
   return (
-    <div className="p-10">
+    <div className="p-10 h-full">
       <h1 className="text-3xl mb-10">Model Management App</h1>
       <LoadingView isLoading={isLoading}>
         <DataTable columns={columns} data={tableData} />
