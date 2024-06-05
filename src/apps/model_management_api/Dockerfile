@@ -29,4 +29,4 @@ COPY src/models ./app/src/models
 
 WORKDIR /app
 
-CMD ["uvicorn", "src.apps.api.main:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uvicorn", "src.apps.model_management_api.main:app", "--host", "0.0.0.0", "--port", "5000"]
