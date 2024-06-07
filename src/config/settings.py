@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     PUSHER_APP_KEY: str
     PUSHER_APP_SECRET: str
     PUSHER_APP_CLUSTER: str
+    DAGSHUB_REPO_URI: str
+    DAGSHUB_ACCESS_KEY_ID: str
+    DAGSHUB_ACCESS_SECRET_KEY: str
 
     model_config = SettingsConfigDict(env_file=".env")
 

@@ -5,9 +5,10 @@ import shutil
 
 import mlflow
 import requests
-from fastapi import BackgroundTasks
-
+from src.models.power_production_model.model import train_power_production_model
+from src.models.solar_radiation_model.model import train_solar_radiation_model
 from src.apps.model_management_api.config.pusher import pusher_client
+from src.apps.model_management_api.utils.load_data import download_data_for_model_train
 from src.config.settings import settings
 from src.models.common.mlflow_config import MlflowConfig
 from PIL import Image
@@ -105,10 +106,10 @@ class ModelsService:
 
     def train_model(self, model_name: str):
         if model_name == 'power_production_model':
-            from src.models.power_production_model.model import train_power_production_model
+            download_data_for_model_train()
             train_power_production_model()
         elif model_name == 'solar_radiation_model':
-            from src.models.solar_radiation_model.model import train_solar_radiation_model
+            download_data_for_model_train()
             train_solar_radiation_model()
         else:
             return 'Model not found!'
