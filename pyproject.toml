@@ -53,6 +53,7 @@ great-expectations = "^0.18.15"
 evidently = "^0.4.25"
 shap = "^0.45.1"
 pusher = "^3.3.2"
+dvc-s3 = "^3.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -60,7 +61,6 @@ jupyter = "^1.0.0"
 poethepoet = "^0.26.1"
 pytest = "^8.2.1"
 ruff = "^0.4.5"
-dvc-s3 = "^3.2.0"
 black = "^24.4.2"
 
 
