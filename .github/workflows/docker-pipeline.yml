@@ -36,7 +36,10 @@ env:
   PUSHER_APP_KEY: ${{ secrets.PUSHER_APP_KEY }}
   PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
   PUSHER_APP_CLUSTER: ${{ secrets.PUSHER_APP_CLUSTER }}
-
+  DAGSHUB_ACCESS_KEY_ID: ${{ secrets.DAGSHUB_ACCESS_KEY_ID }} 
+  DAGSHUB_ACCESS_SECRET_KEY: ${{ secrets.DAGSHUB_ACCESS_SECRET_KEY }}
+  DAGSHUB_REPO_URI: ${{ secrets.DAGSHUB_REPO_URI }}
+  
 jobs:
   main:
     runs-on: ubuntu-latest
