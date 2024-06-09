@@ -11,8 +11,8 @@ def main() -> None:
     converter = DataConverter()
     df = converter.basemodel_to_dataframe(solar_production_data)
 
-    saver = DataSaver("data/raw/fetched/", "power_plant_production.csv")
-    saver.save_to_csv(df)
+    # saver = DataSaver("data/raw/fetched/", "power_plant_production.csv")
+    # saver.save_to_csv(df)
 
 
 if __name__ == "__main__":

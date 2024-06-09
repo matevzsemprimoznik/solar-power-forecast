@@ -1,6 +1,8 @@
 import os
 import dvc.api
-from src.config.settings import setting
+
+from src.config.settings import settings
+
 
 def download_data_for_model_train():
     os.environ["GIT_PYTHON_REFRESH"] = "quiet"
