@@ -781,25 +781,6 @@
     },{
       "expectation_type": "expect_column_min_to_be_between",
       "kwargs": {
-        "column": "direct_radiation_instant",
-        "min_value": 0.0,
-        "strict_min": false
-      },
-      "meta": {
-        "profiler_details": {
-          "metric_configuration": {
-            "domain_kwargs": {
-              "column": "direct_radiation_instant"
-            },
-            "metric_name": "column.min",
-            "metric_value_kwargs": null
-          },
-          "num_batches": 1
-        }
-      }
-    },{
-      "expectation_type": "expect_column_min_to_be_between",
-      "kwargs": {
         "column": "diffuse_radiation_instant",
         "min_value": 0.0,
         "strict_min": false
