@@ -1,6 +1,9 @@
 import numpy as np
 import pandas as pd
 from pandas import NaT
+
+from src.apps.api.config.database import database
+from src.apps.api.models.production_history import ProductionHistoryData
 from src.apps.api.utils.utils import convert_to_datetime
 from src.config.constants import POWER_PRODUCTION_MODEL_NAME, SOLAR_RADIATION_MODEL_NAME
 from src.data.solar_production_fetcher import ProductionFetcher
@@ -114,3 +117,41 @@ class ProductionService:
         self.solar_radiation_artifact = get_artifact(SOLAR_RADIATION_MODEL_NAME, "production")
 
         return "Models updated successfully!"
+
+    def prediction_history(self, start_date_str, end_date_str):
+        print(start_date_str, end_date_str)
+        try:
+            start_date = convert_to_datetime(start_date_str)
+            end_date = convert_to_datetime(end_date_str)
+        except ValueError as e:
+            raise ValueError(e)
+
+        if start_date is None or start_date is NaT:
+            start_date = pd.Timestamp.now() - pd.DateOffset(weeks=1)
+
+        if end_date is None or end_date is NaT:
+            end_date = pd.Timestamp.now()
+
+        if start_date > end_date:
+            raise ValueError("Start date cannot be greater than end date")
+
+        if start_date == end_date:
+            end_date = end_date + pd.DateOffset(days=1) - pd.DateOffset(hours=1)
+
+        print(start_date, end_date)
+
+        collection = database["predictions"]
+
+        data = collection.find()
+
+        production_predictions = []
+
+        for item in data:
+            item.pop('_id')
+            if start_date <= item['date'] <= end_date:
+                production_predictions.append(item)
+
+        return production_predictions
+
+
+

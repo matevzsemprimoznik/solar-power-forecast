@@ -10,11 +10,8 @@ export const getHistory = async (startDate?: string, endDate?: string) => {
     },
   });
   const history = data.history as History[];
-  console.log('history', history);
-  const returns = history.map((h) => ({
+  return history.map((h) => ({
     date: convertStringToDate(h.time),
     power: h.power,
   }));
-  console.log('returns', returns);
-  return returns;
 };

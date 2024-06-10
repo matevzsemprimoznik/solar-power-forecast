@@ -21,6 +21,8 @@ import {
   YAxis,
 } from 'recharts';
 import { format, parseISO } from 'date-fns';
+import { usePredictionHistory } from '@/lib/hooks/use-prediction-history';
+import { PredictionHistory } from '@/lib/types/prediction';
 
 const currentDateUtc = getCurrentUtcDate();
 const yesterdayStartDate = new Date(currentDateUtc);
@@ -43,6 +45,7 @@ export default function Home() {
     dateToString(yesterdayStartDate),
     dateToString(yesterdayEndDate)
   );
+  const { data: predictionHistory } = usePredictionHistory();
 
   const { data: productionLastWeek } = useHistory(
     dateToString(lastWeekStartDate),
@@ -66,7 +69,9 @@ export default function Home() {
   }, [productionLastWeek]);
 
   const nextHourPrediction = useMemo(() => {
-    return predictions && predictions?.length !== 0 ? predictions[0].power : 0;
+    return predictions && predictions?.length !== 0
+      ? predictions[0].prediction
+      : 0;
   }, [predictions]);
 
   const totalNextDay = useMemo(() => {
@@ -83,32 +88,29 @@ export default function Home() {
       return predictionDate >= nextDayStart && predictionDate <= nextDayEnd;
     });
     return nextDayPredictions.reduce(
-      (acc, prediction) => acc + prediction.power,
+      (acc, prediction) => acc + prediction.prediction,
       0
     );
   }, [predictions]);
 
   const production = useMemo(() => {
-    if (!productionLastWeek || !predictions) return [];
-    const merged = [...productionLastWeek, ...predictions];
+    if (!productionLastWeek || !predictions || !predictionHistory) return [];
+    const pred = [...predictionHistory, ...predictions] as unknown as {
+      date: Date;
+      power?: number;
+      prediction: number;
+    }[];
 
     const targetDate = new Date();
     targetDate.setHours(targetDate.getHours() + 2, 0, 0, 0);
 
-    return merged.map(({ date, power }) => ({
-      date: date.getTime(),
-      day: `${date.getDate()}/${date.getMonth() + 1}`,
-      power:
-        date.getTime() < targetDate.getTime()
-          ? (power / 1000000).toFixed(2)
-          : null,
-      prediction:
-        date.getTime() >= new Date().getTime()
-          ? (power / 1000000).toFixed(2)
-          : null,
+    return pred.map((p) => ({
+      date: p.date.getTime(),
+      day: `${p.date.getDate()}/${p.date.getMonth() + 1}`,
+      power: p.power != null ? (p.power / 1000000).toFixed(2) : null,
+      prediction: (p.prediction / 1000000).toFixed(2),
     }));
-  }, [productionLastWeek, predictions]);
-  console.log(production);
+  }, [productionLastWeek, predictions, predictionHistory]);
 
   const startBrushIndex = useMemo(() => {
     const currentTime = getCurrentUtcDate();

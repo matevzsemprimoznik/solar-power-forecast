@@ -4,4 +4,4 @@ from src.config.settings import settings
 
 client = pymongo.MongoClient(settings.MONGO_URI)
 
-database = client["forecasts"]
+database = client["solar-power-production-predictions"]

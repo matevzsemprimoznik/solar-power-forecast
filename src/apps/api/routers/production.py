@@ -23,6 +23,12 @@ def predict(n_next: int):
         "prediction": production_service.predict_n_next(n_next)
     }
 
+@production_router.get("/prediction/history")
+def prediction_history(start_date: str | None = None, end_date: str | None = None):
+    return {
+        "history": production_service.prediction_history(start_date, end_date)
+    }
+
 
 @production_router.get("/history")
 def history(start_date: str | None = None, end_date: str | None = None):
