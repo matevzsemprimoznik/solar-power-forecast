@@ -44,8 +44,8 @@ export default function ModelPage() {
             </div>)}
           </div>
           <h2 className='text-xl mt-20 mb-5'>Artifacts</h2>
-          <div className='grid grid-cols-2 gap-x-10'>
-            <div className='relative w-full' style={{paddingBottom: "70%"}}>
+        {data?.artifacts.shap_bar ? <div className='grid grid-cols-2 gap-x-10'>
+            <div className='relative w-full' style={{ paddingBottom: "70%" }}>
               <Image layout="fill"
                      objectFit="contain" src={`data:image/png;base64,${data?.artifacts.shap_bar}`}
                      alt={'Snap Bar Chart'} />
@@ -55,10 +55,10 @@ export default function ModelPage() {
                      objectFit="contain" src={`data:image/png;base64,${data?.artifacts.shap_beeswarm}`}
                      alt={'Snap BeeSwarm Chart'} />
             </div>
-
-          </div>
+        </div> : <div className=''>No artifacts found for this model</div>
+        }
         </>}
-      </LoadingView>
-    </div>
-  );
-}
+        </LoadingView>
+          </div>
+          );
+        }

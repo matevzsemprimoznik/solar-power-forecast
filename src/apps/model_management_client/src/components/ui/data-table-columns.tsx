@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useEventDispatcher } from '@/lib/hooks/use-event-dispatcher';
+import { formatDate } from '@/lib/utils';
 
 export const columns: ColumnDef<Model>[] = [
   {
@@ -42,11 +43,7 @@ export const columns: ColumnDef<Model>[] = [
     },
     cell: ({ row }) => {
       const timestamp = parseFloat(row.getValue("creation_time"))
-      const date = new Date(timestamp)
-      console.log(timestamp);
-      const formatted = `${date.getDay()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
-
-      return <div>{formatted}</div>
+      return <div>{formatDate(timestamp)}</div>
     },
   },
   {

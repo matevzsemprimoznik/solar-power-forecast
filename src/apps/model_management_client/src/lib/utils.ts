@@ -14,7 +14,7 @@ export function pretifyString(str: string) {
 
 export function formatDate(timestamp: number) {
   const date = new Date(timestamp)
-  return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`
 }
 
 export const pusherClient = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, {
