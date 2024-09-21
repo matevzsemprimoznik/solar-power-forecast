@@ -1,6 +1,6 @@
 outs:
-- md5: 182cb7842194636f324267921f60caad.dir
-  size: 687444
+- md5: 77685ae9983724d33a99853d60c33fee.dir
+  size: 694203
   nfiles: 2
   hash: md5
   path: fetched
